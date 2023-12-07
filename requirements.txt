@@ -80,22 +80,24 @@ shortuuid==1.0.9
 six==1.16.0
 smart-open==5.2.1
 smmap==5.0.0
-spacy==3.4.1
+# spacy==3.4.1
+spacy
 spacy-legacy==3.0.9
 spacy-loggers==1.0.3
 srsly==2.4.4
 subprocess32==3.5.4
 tensorboardX==2.5.1
 textacy==0.12.0
-thinc==8.1.0
+# thinc==8.1.0
+thinc
 threadpoolctl==3.1.0
 tifffile==2022.3.25
 tokenizers==0.10.3
 tomli==2.0.1
 toolz==0.12.0
-torch == 1.8.0
+# torch == 1.8.0
 torchfile==0.1.0
-torchvision==0.9.0
+# torchvision==0.9.0
 tornado==6.1
 tqdm==4.63.1
 transformers==4.5.1

@@ -272,7 +272,7 @@ def _check_and_coerce_cfg_value_type(value_a, value_b, key, full_key):
     # The types must match (with some exceptions)
     type_b = type(value_b)
     type_a = type(value_a)
-    if type_a is type_b:
+    if type_a is type_b or value_b is None or value_a is None: # None is a special value that allows anything
         return value_a
 
     # Exceptions: numpy arrays, strings, tuple<->list
