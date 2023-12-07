@@ -30,9 +30,10 @@ data:
     default_feature_dir: './data/features'
     semantic_feature_dir: './data/sc_features'
     nonsemantic_feature_dir: './data/nsc_features'
+    splits_json: './data/small_splits.json'
     train:
         batch_size: 128
-        max_samples: 3000 # originally ~ 34K
+        # max_samples: 3000 # originally ~ 34K
 train:
     # max_iter: 10000
     max_iter: 1000
