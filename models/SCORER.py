@@ -43,19 +43,18 @@ class Attention(nn.Module):
         Returns:
 
         """
-        # only need to mask the dimension where the softmax (last dim) is applied, as another dim (second last)
-        # will be ignored in future computation anyway
-        # attention_mask = (1 - attention_mask.unsqueeze(1)) * -10000.  # (N, 1, Lq, L)
         batch, L, D = query_states.size()
-        mixed_query_layer = self.query(query_states)
-        mixed_key_layer = self.key(key_states)
-        mixed_value_layer = self.value(value_states)
-
-        query_layer = self.transpose_for_scores(mixed_query_layer)  # (N, nh, Lq, dh)
-        key_layer = self.transpose_for_scores(mixed_key_layer)  # (N, nh, L, dh)
-        value_layer = self.transpose_for_scores(mixed_value_layer)  # (N, nh, L, dh)
-
+        """
+        == To Implement ==
+        calculate the attention in Transformer. 
+        note that the attention mask should be applied to the attention scores before softmax. 1 means not masked, 0 means masked.
+        you should also apply dropout to the attention scores, and return the mean attention scores over all heads.
+        """
+        #--- You should implement the linear projection here. ---#
+        raise NotImplementedError
+    
         #####################################
+        #--- You don't need to change the code in this part. ---#
         # multi-head token-wise matching
         mask = torch.Tensor(np.ones([batch, L])).cuda()
         mask_sum = mask.sum(-1)
@@ -70,28 +69,12 @@ class Attention(nn.Module):
         retrieve_logits = logit_scale * retrieve_logits
         ##################################################
 
-        #####################################
-        # Representation Reconstruction
-        # Take the dot product between "query" and "key" to get the raw attention scores.
-        attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))  # (N, nh, Lq, L)
-        attention_scores = attention_scores / math.sqrt(self.attention_head_size)
-        # Apply the attention mask is (precomputed for all layers in BertModel forward() function)
+        #--- You should implement the attention here ---#
+        raise NotImplementedError
 
-        # Normalize the attention scores to probabilities.
-        attention_probs = nn.Softmax(dim=-1)(attention_scores)
-
-        # This is actually dropping out entire tokens to attend to, which might
-        # seem a bit unusual, but is taken from the original Transformer paper.
-        attention_probs = self.dropout(attention_probs)
-
-        context_layer = torch.matmul(attention_probs, value_layer)
-        context_layer = context_layer.permute(0, 2, 1, 3).contiguous()
-        new_context_layer_shape = context_layer.size()[:-2] + (self.all_head_size,)
-        context_layer = context_layer.view(*new_context_layer_shape)
+        #--- You don't need to change the code in this part. ---#
         context_layer += query_states
         context_layer = self.layer_norm(context_layer)
-        #####################################
-
         return context_layer, retrieve_logits, attention_probs.mean(1)
 
 
